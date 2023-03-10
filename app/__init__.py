@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, session, url_for
-from routes.anime import anime
+from app.routes.anime import anime
 import psycopg2
 
 app = Flask(__name__)
