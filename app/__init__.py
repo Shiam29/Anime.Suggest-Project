@@ -2,9 +2,18 @@ from flask import Flask, render_template, request, redirect, session, url_for
 from app.routes.anime import anime
 import psycopg2
 from app.db import db_connection
+import os
 
 app = Flask(__name__)
 app.register_blueprint(anime)
+
+if os.environ.get('DATABASE_URL'):
+  cursor = db_connection.cursor()
+  cursor.execute("DROP TABLE IF EXISTS users CASCADE;")
+  cursor.execute("DROP TABLE IF EXISTS anime CASCADE;")
+
+  cursor.execute("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(50), email VARCHAR(50), password VARCHAR(100), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);")
+  cursor.execute("CREATE TABLE IF NOT EXISTS anime (id SERIAL PRIMARY KEY,name VARCHAR(50),year INT,image_url VARCHAR(200));")
 
 # Set the secret key for sessions
 app.secret_key = 'shiem29'
