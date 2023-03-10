@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Menu
+{% endblock title %}
+
+
+{% block main %}
+<p>
+  <span>Welcome {{user_name}}!</span>
+  <form action="/logout" method="post">
+    <button type="submit">Logout</button>
+  </form>
+</p>
+    <!-- {% if sorted %}
+        <a class="sort-btn" href="./?sorted=false">Sort by item id</a>
+    {% else %}
+    <a class="sort-btn" href="./?sorted=true">Sort by price</a>
+    {% endif %} -->
+<table>
+  <thead>
+    <th>
+      id
+    </th>
+    <th>
+      name
+    </th>
+    <th>
+      year
+    </th>
+    <th>
+      image
+    </th>
+  </thead>
+  <tbody>
+    {% for item in anime %}
+    <tr>
+      <td>{{ item.id }}</td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.year }}</td>
+      <td> 
+        <img style="height: 64px" src="{{ item.image_url }}" alt="{{ item.name }}">
+      </td>
+      <td>
+        <form method="POST" action="/anime/{{ item.id }}/delete">
+          <button type="submit">Delete</button>
+        </form>
+        <a href="/anime/{{ item.id }}/edit">Edit</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock main %}
