@@ -1,11 +1,11 @@
 from flask import Blueprint, request, redirect, render_template;
 import psycopg2
+from app.db import db_connection
 
 anime = Blueprint('anime', __name__, template_folder='templates', url_prefix='/anime')
 
 @anime.post('/')
 def create_anime():
-    db_connection = psycopg2.connect("dbname=library")
     db_cursor = db_connection.cursor()
 
     name = request.form.get('name')
@@ -17,13 +17,11 @@ def create_anime():
 
     db_connection.commit()
     db_cursor.close()
-    db_connection.close()
 
     return redirect('/')
 
 @anime.post('/<int:id>/edit')
 def update_anime(id):
-    db_connection = psycopg2.connect("dbname=library")
     db_cursor = db_connection.cursor()
 
     anime = {
@@ -37,14 +35,12 @@ def update_anime(id):
 
     db_connection.commit()
     db_cursor.close()
-    db_connection.close()
 
     return redirect('/')
 
 
 @anime.get('/<int:id>/edit')
 def edit_anime(id):
-    db_connection = psycopg2.connect("dbname=library")
     db_cursor = db_connection.cursor()
 
     db_cursor.execute("SELECT id, name, year, image_url FROM anime WHERE id = %s", [id])
@@ -62,19 +58,16 @@ def edit_anime(id):
     }
 
     db_cursor.close()
-    db_connection.close()
 
     return render_template('edit_item.html', anime=anime)
 
 @anime.post('/<int:id>/delete')
 def delete_anime(id):
-    db_connection = psycopg2.connect("dbname=library")
     db_cursor = db_connection.cursor()
 
     db_cursor.execute("DELETE FROM anime WHERE id = %s", [id])
 
     db_connection.commit()
     db_cursor.close()
-    db_connection.close()
 
     return redirect('/')

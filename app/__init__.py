@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, url_for
 from app.routes.anime import anime
 import psycopg2
+from app.db import db_connection
 
 app = Flask(__name__)
 app.register_blueprint(anime)
@@ -14,7 +15,6 @@ def render_signup_page():
 
 @app.post('/signup')
 def signup_user():
-  db_connection = psycopg2.connect("dbname=library")
   db_cursor = db_connection.cursor()
 
   name = request.form.get('name')
@@ -30,7 +30,6 @@ def signup_user():
   result = db_cursor.fetchall()
 
   db_cursor.close()
-  db_connection.close()
 
   if len(result) == 0:
     return redirect('/login')
@@ -66,14 +65,12 @@ def render_login_page():
 @app.post('/login')
 def login_user():
   user_email = request.form.get('email')
-  db_connection = psycopg2.connect("dbname=library")
   db_cursor = db_connection.cursor()
 
   db_cursor.execute("SELECT id, name, email, password FROM users WHERE email = %s;", [user_email])
   result = db_cursor.fetchall()
 
   db_cursor.close()
-  db_connection.close()
 
   if len(result) == 0:
     return redirect('/login')
@@ -92,7 +89,6 @@ def add_anime():
 
 @app.route('/')
 def index():
-  db_connection = psycopg2.connect("dbname=library")
   db_cursor = db_connection.cursor()
   db_cursor.execute("SELECT id, name, year, image_url FROM anime;")
   rows = db_cursor.fetchall() 
@@ -108,6 +104,5 @@ def index():
       }
     )
   db_cursor.close()
-  db_connection.close()
 
   return render_template('home.html', anime=anime, user_name=session.get('user_name', 'UNKNOWN'))
