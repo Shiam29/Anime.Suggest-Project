@@ -15,7 +15,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE anime (
-  id INT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(50),
   year INT,
   image_url VARCHAR(200)
