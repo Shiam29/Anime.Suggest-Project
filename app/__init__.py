@@ -12,7 +12,7 @@ if os.environ.get('DATABASE_URL'):
   cursor.execute("DROP TABLE IF EXISTS users CASCADE;")
   cursor.execute("DROP TABLE IF EXISTS anime CASCADE;")
 
-  cursor.execute("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(50), email VARCHAR(50), password VARCHAR(100), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);")
+  cursor.execute("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, name VARCHAR(50), email VARCHAR(50), password TEXT NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);")
   cursor.execute("CREATE TABLE IF NOT EXISTS anime (id SERIAL PRIMARY KEY,name VARCHAR(50),year INT,image_url VARCHAR(200));")
 
 # Set the secret key for sessions
