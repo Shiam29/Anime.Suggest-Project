@@ -1,5 +1,4 @@
 from flask import Blueprint, request, redirect, render_template;
-import psycopg2
 from app.db import db_connection
 
 anime = Blueprint('anime', __name__, template_folder='templates', url_prefix='/anime')

@@ -1,6 +1,6 @@
 TRUNCATE TABLE users CASCADE;
 
-INSERT INTO users (name, email, password, created_at, updated_at)
+INSERT INTO users (name, email, password_hash, created_at, updated_at)
 VALUES ('shiam', 'shiamuddulla29@hotmail.com', 'Portugal79', NOW(), NOW());
 
 TRUNCATE TABLE anime CASCADE;
